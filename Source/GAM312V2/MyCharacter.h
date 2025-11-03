@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Camera/CameraComponent.h"
-#include "PlayerChar.generated.h"
+#include "MyCharacter.generated.h"
 
 UCLASS()
-class GAM312V2_API APlayerChar : public ACharacter
+class GAM312V2_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	APlayerChar();
+	AMyCharacter();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,23 +25,5 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//Linked UFUNCTIONS TO INPUTS CNRT . to make into definition
-	UFUNCTION()
-		void MoveForward(float axisValue);
-
-	UFUNCTION()
-		void MoveRight(float axisValue);
-
-	UFUNCTION()
-		void StartJump();
-
-	UFUNCTION()
-		void StopJump();
-
-	UFUNCTION()
-		void Findobject();
-
-	UPROPERTY(VisibleAnywhere) //sets camera to visible
-		UCameraComponent* PlayerCamComp;
 
 };
