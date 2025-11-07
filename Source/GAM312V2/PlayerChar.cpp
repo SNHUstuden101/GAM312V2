@@ -6,7 +6,7 @@
 // Sets default values
 APlayerChar::APlayerChar()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	//Initial component of camera setup
 	PlayerCamComp = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Cam"));
@@ -15,12 +15,20 @@ APlayerChar::APlayerChar()
 	//links rotation
 	PlayerCamComp->bUsePawnControlRotation = true;
 
-}
+	ResourcesArray.SetNum(3);
+	ResourceNameArray.Add(TEXT("Wood"));
+	ResourceNameArray.Add(TEXT("Stone"));
+	ResourceNameArray.Add(TEXT("Berry"));
 
+}
 // Called when the game starts or when spawned
 void APlayerChar::BeginPlay()
 {
+	
 	Super::BeginPlay();
+
+	FTimerHandle StatsTimerHandle; //set handle for timer
+	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar::DecreaseStats, 2.0f, true); //this references self. 2.0f is the amount of seconds it calls the function
 	
 }
 
@@ -74,5 +82,47 @@ void APlayerChar::StopJump()
 //currently empty code but will be use later
 void APlayerChar::Findobject()
 {
+}
+
+void APlayerChar::SetHealth(float amount)
+{
+	if (Health + amount < 100) //sets add to or subtract from Health
+	{
+		Health = Health + amount;
+
+	}
+}
+
+void APlayerChar::SetHunger(float amount)
+{
+	if (Hunger + amount < 100) //sets add to or subtract from Hunger
+	{
+		Hunger = Hunger + amount;
+
+	}
+}
+
+void APlayerChar::SetStamina(float amount)
+{
+	if (Stamina + amount < 100) //sets add to or subtract from stamina
+	{
+		Stamina = Stamina + amount;
+
+	}
+}
+
+void APlayerChar::DecreaseStats()
+{
+	if (Hunger > 0)
+	{
+		SetHunger(-1.0f);
+	}
+	
+	SetStamina(10.0f);
+
+	if (Hunger <= 0)
+	{
+		SetHealth(-3.0f);
+	}
 }
 

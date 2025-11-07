@@ -45,4 +45,40 @@ public:
 	UPROPERTY(VisibleAnywhere) //sets camera to visible
 		UCameraComponent* PlayerCamComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats") //editanywhere allows you to change it from anywhere //bluepring readwrite lets you edit is
+		float Health = 100.0f; //0.0f for float tag //catagogy is set via settings // sets health float//Sets in player defaults
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float Hunger = 100.0f; //sets hunger float//Sets in player defaults
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float Stamina = 100.0f; //sets stamina float//Sets in player defaults
+
+	UPROPERTY(EditAnywhere, Category = "Resources") //Setting int for resources
+		int Wood;
+
+	UPROPERTY(EditAnywhere, Category = "Resources") //Setting int for resources
+		int Stone;
+
+	UPROPERTY(EditAnywhere, Category = "Resources") //Setting int for resources
+		int Berry;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
+		TArray<int> ResourcesArray;
+
+	UPROPERTY(EditAnywhere, Category = "Resources") //save names is array
+		TArray<FString> ResourceNameArray;
+
+	UFUNCTION(BlueprintCallable) //creates and calls this function
+		void SetHealth(float amount);
+
+	UFUNCTION(BlueprintCallable) //creates and calls this function
+		void SetHunger(float amount);
+
+	UFUNCTION(BlueprintCallable) //creates and calls this function
+		void SetStamina(float amount);
+
+	UFUNCTION()
+		void DecreaseStats();
+
 };
