@@ -51,6 +51,7 @@ void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	//Bind action inputs for jumping
 	PlayerInputComponent->BindAction("JumpEvent", IE_Pressed, this, &APlayerChar::StartJump);
 	PlayerInputComponent->BindAction("JumpEvent", IE_Released, this, &APlayerChar::StopJump);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerChar::Findobject);//allows interact when pressed
 }
 //Handle forward movement input
 void APlayerChar::MoveForward(float axisValue)
@@ -82,6 +83,50 @@ void APlayerChar::StopJump()
 //currently empty code but will be use later
 void APlayerChar::Findobject()
 {
+	//
+	FHitResult HitResult;
+	FVector StartLocation = PlayerCamComp->GetComponentLocation();
+	FVector Direction = PlayerCamComp->GetForwardVector() * 800.0f; //800 units ahead of camera
+	FVector EndLocation = StartLocation + Direction; 
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this); //ignore player character
+	QueryParams.bTraceComplex = true;
+	QueryParams.bReturnFaceIndex = true;
+	
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, QueryParams)) //set line trace
+	{
+		AResource_M* HitResource = Cast<AResource_M>(HitResult.GetActor());//cast to resource
+
+		if (Stamina > 5.0f) //checks to see if stamina is greater than 5
+
+			if (HitResource)
+			{
+				FString hitName = HitResource->resourceName; //getting resource value
+				int resourceValue = HitResource->resourceAmount; //checking resourse ammount
+
+				HitResource->totalResource = HitResource->totalResource - resourceValue; //subtracts value from total amount when hit
+
+				if (HitResource->totalResource > resourceValue) //if theres resource left we set the value
+				{
+					GiveResources(resourceValue, hitName); //sets new value and name
+
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected")); //Shows that we collect resource
+
+					UGameplayStatics::SpawnDecalAtLocation(GetWorld(), hitDecal, FVector(10.0f, 10.0f, 10.0f), HitResult.Location, FRotator(-90, 0, 0), 2.0f);
+
+					SetStamina(-5.0f); //subtracts 5 from smanima
+				}
+				else
+				{
+					HitResource->Destroy();
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleated")); //destroys and shows resourse depleated
+				}
+		}
+	}
+
 }
 
 void APlayerChar::SetHealth(float amount)
@@ -124,5 +169,24 @@ void APlayerChar::DecreaseStats()
 	{
 		SetHealth(-3.0f);
 	}
+}
+
+void APlayerChar::GiveResources(float amount, FString resourceType)
+{
+	if (resourceType == "Wood")
+	{
+		ResourcesArray[0] = ResourcesArray[0] + amount; //adds amount to resouse array
+	}
+
+	if (resourceType == "Stone")
+	{
+		ResourcesArray[1] = ResourcesArray[1] + amount;
+	}
+
+	if (resourceType == "Berry")
+	{
+		ResourcesArray[2] = ResourcesArray[2] + amount;
+	}
+
 }
 

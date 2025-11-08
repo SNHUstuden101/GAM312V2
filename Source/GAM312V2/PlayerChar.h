@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "Resource_M.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -63,6 +65,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Resources") //Setting int for resources
 		int Berry;
 
+	UPROPERTY(EditAnywhere, Category = "HitMarker") //creating hit marker
+		UMaterialInterface* hitDecal;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
 		TArray<int> ResourcesArray;
 
@@ -80,5 +85,8 @@ public:
 
 	UFUNCTION()
 		void DecreaseStats();
+
+	UFUNCTION()
+		void GiveResources(float amount, FString resourceType);
 
 };
