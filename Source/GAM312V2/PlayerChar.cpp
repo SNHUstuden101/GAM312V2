@@ -197,7 +197,7 @@ void APlayerChar::GiveResources(float amount, FString resourceType)
 {
 	if (resourceType == "Wood")
 	{
-		ResourcesArray[0] = ResourcesArray[0] + amount; //adds amount to resouse array
+		ResourcesArray[0] = ResourcesArray[0] + amount; //adds amount to resourse array
 	}
 
 	if (resourceType == "Stone")
@@ -256,10 +256,10 @@ void APlayerChar::SpawnBuilding(int buildingID, bool& isSuccess)
 
 			spawnedPart = GetWorld()->SpawnActor<ABuildingPart>(BuildPartClass, Endlocation, myRot, SpawnParams); //spawns part at location
 
-			isSuccess = true; //Checks wether sucess is tru or not
+			isSuccess = true; //Checks wether sucess is true or not
 		}
 
-		isSuccess = false; //Checks wether sucess is tru or not
+		isSuccess = false; //Checks wether sucess is true or not
 
 	}
 
@@ -269,7 +269,7 @@ void APlayerChar::RotateBuilding()
 {
 	if (isBuilding)
 	{
-		spawnedPart->AddActorWorldRotation(FRotator(0, 90, 0));
+		spawnedPart->AddActorWorldRotation(FRotator(0, 90, 0)); //roates object 90 degrees at pivot
 	}
 }
 
