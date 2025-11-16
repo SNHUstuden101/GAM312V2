@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Resource_M.h"
+#include "BuildingPart.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerChar.generated.h"
 
@@ -71,6 +72,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
 		TArray<int> ResourcesArray;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building Supplies")
+		TArray<int> BuildingArray; //Array to store how many of each type we have
+
+	UPROPERTY() //Bollean to determing if we are building or not
+		bool isBuilding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) //Allows us to set children for each Part.
+		TSubclassOf<ABuildingPart> BuildPartClass;
+
+	UPROPERTY()
+		ABuildingPart* spawnedPart;
+
 	UPROPERTY(EditAnywhere, Category = "Resources") //save names is array
 		TArray<FString> ResourceNameArray;
 
@@ -89,4 +102,12 @@ public:
 	UFUNCTION()
 		void GiveResources(float amount, FString resourceType);
 
+	UFUNCTION(BlueprintCallable)
+		void UpdateResources(float woodAmount, float StoneAmount, FString buildingObject);
+
+	UFUNCTION(BlueprintCallable)
+		void SpawnBuilding(int buildingID, bool& isSuccess);
+
+	UFUNCTION()
+		void RotateBuilding();
 };
