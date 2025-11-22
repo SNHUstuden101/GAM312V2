@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Resource_M.h"
 #include "BuildingPart.h"
+#include "PlayerWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerChar.generated.h"
 
@@ -83,6 +84,9 @@ public:
 
 	UPROPERTY()
 		ABuildingPart* spawnedPart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UPlayerWidget* playerUI;
 
 	UPROPERTY(EditAnywhere, Category = "Resources") //save names is array
 		TArray<FString> ResourceNameArray;
