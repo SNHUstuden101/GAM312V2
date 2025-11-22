@@ -86,7 +86,7 @@ public:
 		ABuildingPart* spawnedPart;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UPlayerWidget* playerUI;
+		UPlayerWidget* playerUI; //sets PlayerUI to the widget
 
 	UPROPERTY(EditAnywhere, Category = "Resources") //save names is array
 		TArray<FString> ResourceNameArray;

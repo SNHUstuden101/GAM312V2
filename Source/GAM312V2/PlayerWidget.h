@@ -16,6 +16,6 @@ class GAM312V2_API UPlayerWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void UpdateBars(float Health1, float Hunger1, float Stamina1);
+	void UpdateBars(float Health1, float Hunger1, float Stamina1); //puts the nodes on updatebars blueprint node
 	
 };
