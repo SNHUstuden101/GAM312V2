@@ -70,20 +70,20 @@ void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("RotPart", IE_Released, this, &APlayerChar::RotateBuilding);//Rotates the building binding e
 }
 //Handle forward movement input
-void APlayerChar::MoveForward(float axisValue)
+void APlayerChar::MoveForward(float AxisValue)
 {
 	//Get the forward direction based on the controller's rotation
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 	//Applys Movement input
-	AddMovementInput(Direction, axisValue);
+	AddMovementInput(Direction, AxisValue);
 }
 //Handle right movement input
-void APlayerChar::MoveRight(float axisValue)
+void APlayerChar::MoveRight(float AxisValue)
 {
 	//Get the right direction based on the controller's rotation
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	//Apply movement input 
-	AddMovementInput(Direction, axisValue);
+	AddMovementInput(Direction, AxisValue);
 }
 
 //Start jumping when the jump button is pressed
@@ -119,14 +119,14 @@ void APlayerChar::Findobject()
 
 				if (HitResource)
 				{
-					FString hitName = HitResource->resourceName; //getting resource value
-					int resourceValue = HitResource->resourceAmount; //checking resourse ammount
+					FString HitName = HitResource->resourceName; //getting resource value
+					int ResourceValue = HitResource->resourceAmount; //checking resourse ammount
 
-					HitResource->totalResource = HitResource->totalResource - resourceValue; //subtracts value from total amount when hit
+					HitResource->totalResource = HitResource->totalResource - ResourceValue; //subtracts value from total amount when hit
 
-					if (HitResource->totalResource > resourceValue) //if theres resource left we set the value
+					if (HitResource->totalResource > ResourceValue) //if theres resource left we set the value
 					{
-						GiveResources(resourceValue, hitName); //sets new value and name
+						GiveResources(ResourceValue, HitName); //sets new value and name
 
 						check(GEngine != nullptr);
 						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected")); //Shows that we collect resource
@@ -153,29 +153,29 @@ void APlayerChar::Findobject()
 
 }
 
-void APlayerChar::SetHealth(float amount)
+void APlayerChar::SetHealth(float Amount)
 {
-	if (Health + amount < 100) //sets add to or subtract from Health
+	if (Health + Amount < 100) //sets add to or subtract from Health
 	{
-		Health = Health + amount;
+		Health = Health + Amount;
 
 	}
 }
 
-void APlayerChar::SetHunger(float amount)
+void APlayerChar::SetHunger(float Amount)
 {
-	if (Hunger + amount < 100) //sets add to or subtract from Hunger
+	if (Hunger + Amount < 100) //sets add to or subtract from Hunger
 	{
-		Hunger = Hunger + amount;
+		Hunger = Hunger + Amount;
 
 	}
 }
 
-void APlayerChar::SetStamina(float amount)
+void APlayerChar::SetStamina(float Amount)
 {
-	if (Stamina + amount < 100) //sets add to or subtract from stamina
+	if (Stamina + Amount < 100) //sets add to or subtract from stamina
 	{
-		Stamina = Stamina + amount;
+		Stamina = Stamina + Amount;
 
 	}
 }
@@ -195,45 +195,45 @@ void APlayerChar::DecreaseStats()
 	}
 }
 
-void APlayerChar::GiveResources(float amount, FString resourceType)
+void APlayerChar::GiveResources(float Amount, FString ResourceType)
 {
-	if (resourceType == "Wood")
+	if (ResourceType == "Wood")
 	{
-		ResourcesArray[0] = ResourcesArray[0] + amount; //adds amount to resourse array
+		ResourcesArray[0] = ResourcesArray[0] + Amount; //adds amount to resourse array
 	}
 
-	if (resourceType == "Stone")
+	if (ResourceType == "Stone")
 	{
-		ResourcesArray[1] = ResourcesArray[1] + amount;
+		ResourcesArray[1] = ResourcesArray[1] + Amount;
 	}
 
-	if (resourceType == "Berry")
+	if (ResourceType == "Berry")
 	{
-		ResourcesArray[2] = ResourcesArray[2] + amount;
+		ResourcesArray[2] = ResourcesArray[2] + Amount;
 	}
 
 }
 
-void APlayerChar::UpdateResources(float woodAmount, float StoneAmount, FString buildingObject)
+void APlayerChar::UpdateResources(float WoodAmount, float StoneAmount, FString BuildingObject)
 {
-	if (woodAmount <= ResourcesArray[0])
+	if (WoodAmount <= ResourcesArray[0])
 	{
 		if (StoneAmount <= ResourcesArray[1])
 		{
-			ResourcesArray[0] = ResourcesArray[0] - woodAmount; //Subtracts the amount to build object
+			ResourcesArray[0] = ResourcesArray[0] - WoodAmount; //Subtracts the amount to build object
 			ResourcesArray[1] = ResourcesArray[1] - StoneAmount;
 
-			if (buildingObject == "Wall")
+			if (BuildingObject == "Wall")
 			{
 				BuildingArray[0] = BuildingArray[0] + 1; //Adds to the built object
 			}
 
-			if (buildingObject == "Floor")
+			if (BuildingObject == "Floor")
 			{
 				BuildingArray[1] = BuildingArray[1] + 1;//Adds to the built object
 			}
 
-			if (buildingObject == "Ceiling")
+			if (BuildingObject == "Ceiling")
 			{
 				BuildingArray[2] = BuildingArray[2] + 1;//Adds to the built object
 			}
@@ -241,27 +241,27 @@ void APlayerChar::UpdateResources(float woodAmount, float StoneAmount, FString b
 	}
 }
 
-void APlayerChar::SpawnBuilding(int buildingID, bool& isSuccess)
+void APlayerChar::SpawnBuilding(int BuildingId, bool& IsSuccess)
 {
 	if (!isBuilding)
 	{
-		if (BuildingArray[buildingID] >= 1) //check to see if you have atleast 1
+		if (BuildingArray[BuildingId] >= 1) //check to see if you have atleast 1
 		{
 			isBuilding = true; //sets it true
 			FActorSpawnParameters SpawnParams;
 			FVector StartLocation = PlayerCamComp->GetComponentLocation(); //Checking direction again
 			FVector Direction = PlayerCamComp->GetForwardVector() * 400.0f;
 			FVector Endlocation = StartLocation* Direction;
-			FRotator myRot(0, 0, 0);
+			FRotator MyRot(0, 0, 0);
 
-			BuildingArray[buildingID] = BuildingArray[buildingID] - 1; //Subtracts part from array
+			BuildingArray[BuildingId] = BuildingArray[BuildingId] - 1; //Subtracts part from array
 
-			spawnedPart = GetWorld()->SpawnActor<ABuildingPart>(BuildPartClass, Endlocation, myRot, SpawnParams); //spawns part at location
+			spawnedPart = GetWorld()->SpawnActor<ABuildingPart>(BuildPartClass, Endlocation, MyRot, SpawnParams); //spawns part at location
 
-			isSuccess = true; //Checks wether sucess is true or not
+			IsSuccess = true; //Checks wether sucess is true or not
 		}
 
-		isSuccess = false; //Checks wether sucess is true or not
+		IsSuccess = false; //Checks wether sucess is true or not
 
 	}
 
